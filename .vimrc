@@ -3,6 +3,8 @@ let mapleader = ","
 " To disable a plugin, add it's bundle name to the following list
 let g:pathogen_disabled = []
 
+call add(g:pathogen_disabled, 'snippets')
+
 call add(g:pathogen_disabled, 'command-t')
 
 " for some reason the csscolor plugin is very slow when run on the terminal
