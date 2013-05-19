@@ -35,15 +35,8 @@ set tabstop=2
 set shiftwidth=2
 
 " Remap clipboard
-nnoremap y "+y
-vnoremap y "+y
-nnoremap Y "+Y
-vnoremap Y "+Y
-nnoremap p "+p
-vnoremap p "+p
-nnoremap P "+P
-vnoremap P "+P
-nmap <silent><C-\> <Leader><Leader>f
+nmap <silent>\c   :let @+=@"<CR>
+nmap <silent>\v   :let @"=@+<CR>
 nmap <silent><F2> :NERDTreeToggle<CR>
 nmap <silent>L H<Leader><Leader>j
 
