@@ -14,6 +14,9 @@ if v:version < '703' || !has('python')
   call add(g:pathogen_disabled, 'gundo')
 endif
 
+" Set numbertoggle trigger
+let g:NumberToggleTrigger="<F2>"
+
 execute pathogen#infect()
 
 if v:version >= '703'
@@ -39,12 +42,3 @@ nmap <silent>L H<Leader><Leader>j
 " F5: Gundo
 nnoremap <silent><F5> :GundoToggle<CR>
 
-" use Ctrl+L to toggle the line number counting method
-function! g:ToggleNuMode()
-  if &nu == 1
-     set rnu
-  else
-     set nu
-  endif
-endfunction
-nnoremap <silent><C-L> :call g:ToggleNuMode()<cr>
