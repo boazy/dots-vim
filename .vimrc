@@ -15,7 +15,7 @@ if v:version < '703' || !has('python')
 endif
 
 " Set numbertoggle trigger
-let g:NumberToggleTrigger="<F2>"
+let g:NumberToggleTrigger="<C-L>"
 
 execute pathogen#infect()
 
