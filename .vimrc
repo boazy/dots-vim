@@ -15,7 +15,7 @@ if v:version < '703' || !has('python')
 endif
 
 " Set numbertoggle trigger
-let g:NumberToggleTrigger="<C-L>"
+let g:NumberToggleTrigger="<C-l>"
 
 execute pathogen#infect()
 
@@ -38,6 +38,8 @@ nmap <silent>\c   :let @+=@"<CR>
 nmap <silent>\v   :let @"=@+<CR>
 nmap <silent><F2> :NERDTreeToggle<CR>
 nmap <silent>L H<Leader><Leader>j
+
+nnoremap <leader>hr yypVr=
 
 " F5: Gundo
 nnoremap <silent><F5> :GundoToggle<CR>
