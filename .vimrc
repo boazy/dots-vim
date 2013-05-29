@@ -27,11 +27,21 @@ endif
 
 filetype plugin indent on
 
+" Perl-style regex for  find
+nnoremap / /\v
+vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
+
+set gdefault
+set ignorecase
+set smartcase
 set number
 set mouse=a
 set expandtab
 set tabstop=2
 set shiftwidth=2
+set textwidth=78
 
 " Remap clipboard
 nmap <silent>\c   :let @+=@"<CR>
