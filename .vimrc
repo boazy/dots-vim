@@ -17,6 +17,14 @@ endif
 " Set numbertoggle trigger
 let g:NumberToggleTrigger="<C-l>"
 
+set conceallevel=2
+set concealcursor=vin
+let g:clang_snippets=1                  " Automatically add snippets with function parameters
+let g:clang_conceal_snippets=1          " Conceal the snippets
+let g:clang_auto_select=1               " Select the first entry in the popup menu
+let g:clang_library_path="/usr/lib/"    " This is where libclang.so is found
+let g:SuperTabDefaultCompletionType='context'
+
 execute pathogen#infect()
 
 if v:version >= '703'
