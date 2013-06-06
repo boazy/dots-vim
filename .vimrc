@@ -25,6 +25,7 @@ if v:version >= '703'
   set undofile
 endif
 
+syntax on
 filetype plugin indent on
 
 " Perl-style regex for  find
