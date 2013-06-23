@@ -60,6 +60,8 @@ nmap <silent>L H<Leader><Leader>j
 
 nnoremap <leader>hr yypVr=
 
+nmap ZW :w<CR>
+
 " F5: Gundo
 nnoremap <silent><F5> :GundoToggle<CR>
 
