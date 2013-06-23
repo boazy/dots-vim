@@ -1,3 +1,26 @@
+if has('win32')
+  set nocompatible
+  source $VIMRUNTIME/vimrc_example.vim
+  source $VIMRUNTIME/mswin.vim
+  behave mswin
+
+  set diffexpr=MyDiff()
+  function MyDiff()
+    let opt = '-a --binary '
+    if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+    if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+    let arg1 = v:fname_in
+    if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+    let arg2 = v:fname_new
+    if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+    let arg3 = v:fname_out
+    if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+    let eq = ''
+    let cmd = 'diff'
+    silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+  endfunction
+end
+
 let mapleader = ","
 
 " To disable a plugin, add it's bundle name to the following list
@@ -29,7 +52,11 @@ execute pathogen#infect()
 
 if v:version >= '703'
   au BufWritePre /tmp/* setlocal noundofile
-  set undodir=~/tmp/.vim/undo
+  if has('win32')
+    set undodir=$HOME/.vimundo
+  else
+    set undodir=~/tmp/.vim/undo
+  endif
   set undofile
 endif
 
@@ -52,9 +79,6 @@ set tabstop=2
 set shiftwidth=2
 set textwidth=78
 
-" Remap clipboard
-nmap <silent>\c   :let @+=@"<CR>
-nmap <silent>\v   :let @"=@+<CR>
 nmap <silent><F2> :NERDTreeToggle<CR>
 nmap <silent>L H<Leader><Leader>j
 
@@ -65,3 +89,12 @@ nmap ZW :w<CR>
 " F5: Gundo
 nnoremap <silent><F5> :GundoToggle<CR>
 
+if has('win32')
+  " Color scheme
+  set background=dark
+  colorscheme solarized
+else
+  " Remap clipboard
+  nmap <silent>\c   :let @+=@"<CR>
+  nmap <silent>\v   :let @"=@+<CR>
+endif
