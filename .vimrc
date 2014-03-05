@@ -86,6 +86,9 @@ set tabstop=2
 set shiftwidth=2
 set textwidth=78
 
+" Sets the default behavior when opening a new file to hide the current buffer and create a new one.
+set hidden
+
 nmap <silent><F2> :NERDTreeToggle<CR>
 nmap <silent>L H<Leader><Leader>j
 
