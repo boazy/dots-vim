@@ -38,6 +38,7 @@ if v:version < '703' || !has('python')
 endif
 
 " CtrlP options
+let g:ctrlp_extensions = ['funky']
 let g:ctrlp_cmd = 'CtrlPMixed'
 
 " Set numbertoggle trigger
