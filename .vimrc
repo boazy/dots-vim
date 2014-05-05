@@ -77,6 +77,9 @@ vnoremap / /\v
 nnoremap ? ?\v
 vnoremap ? ?\v
 
+" Clear last search highlight on ENTER
+nnoremap <CR> :nohlsearch<CR><CR>
+
 set gdefault
 set ignorecase
 set smartcase
