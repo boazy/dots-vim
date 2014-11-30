@@ -103,11 +103,11 @@ nmap ZW :w<CR>
 " F5: Gundo
 nnoremap <silent><F5> :GundoToggle<CR>
 
-if has('win32')
-  " Color scheme
-  set background=dark
-  colorscheme solarized
-else
+" Color scheme
+set background=dark
+colorscheme solarized
+
+if !has('win32')
   " Remap clipboard
   nmap <silent>\c   :let @+=@"<CR>
   nmap <silent>\v   :let @"=@+<CR>
