@@ -48,10 +48,18 @@ set conceallevel=2
 set concealcursor=vin
 
 " clang_complete options
+let g:clang_complete_auto=0
 let g:clang_snippets=1                  " Automatically add snippets with function parameters
 let g:clang_conceal_snippets=1          " Conceal the snippets
 let g:clang_auto_select=1               " Select the first entry in the popup menu
-let g:clang_library_path="/usr/lib/"    " This is where libclang.so is found
+if has('mac')
+  let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib"
+else
+  let g:clang_library_path="/usr/lib/"    " This is where libclang.so is found
+endif
+
+" Disable preview scratch window
+set completeopt=menu,menuone
 
 " SuperTab options
 let g:SuperTabDefaultCompletionType='context'
