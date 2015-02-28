@@ -1,3 +1,9 @@
+" Header and vim settings {{
+" vim: set sw=2 ts=2 et tw=78 foldmarker={{,}} foldlevel=0 foldmethod=marker spell:
+" }}
+" === Preamble === 
+let mapleader = ","
+" Windowns compatibility {{
 if has('win32')
   set nocompatible
   source $VIMRUNTIME/vimrc_example.vim
@@ -20,44 +26,29 @@ if has('win32')
     silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
   endfunction
 end
+" }}
+" === Plugins ===
+" Plugin settings {{
+  " CtrlP options {{
+    let g:ctrlp_extensions = ['funky']
+    let g:ctrlp_cmd = 'CtrlPMixed'
+  " }}
+  " YCM settings {{
+    " Disable preview scratch window
+    set completeopt=longest,menu,menuone
 
-let mapleader = ","
-
-" To disable a plugin, add it's bundle name to the following list
-let g:pathogen_disabled = ['clang_complete', 'supertab']
-
-" for some reason the csscolor plugin is very slow when run on the terminal
-" but not in GVim, so disable it if no GUI is running
-if !has('gui_running')
-  call add(g:pathogen_disabled, 'csscolor')
-endif
-
-" Gundo requires at least vim 7.3
-if v:version < '703' || !has('python')
-  call add(g:pathogen_disabled, 'gundo')
-endif
-
-" CtrlP options
-let g:ctrlp_extensions = ['funky']
-let g:ctrlp_cmd = 'CtrlPMixed'
-
-" Set numbertoggle trigger
-let g:NumberToggleTrigger="<C-l>"
-
-" set conceallevel=2
-" set concealcursor=vin
-
-" Disable preview scratch window
-set completeopt=longest,menu,menuone
-
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion = ['<Up>']
-
-" SuperTab options
-let g:SuperTabDefaultCompletionType='context'
-
-" execute pathogen#infect()
+    let g:ycm_global_ycm_extra_conf = '~/dots/vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+    let g:ycm_key_list_select_completion = ['<Down>']
+    let g:ycm_key_list_previous_completion = ['<Up>']
+  " }}
+  " SuperTab settings (disabled) {{
+  " let g:SuperTabDefaultCompletionType='context'
+  " }}
+  " NumberToggle settings {{
+    let g:NumberToggleTrigger="<C-l>"
+  " }}
+" }}
+" Load plugins {{
 call plug#begin()
   Plug 'tpope/vim-sensible'
   Plug 'tpope/vim-surround'
@@ -81,58 +72,66 @@ call plug#begin()
   Plug 'Valloric/YouCompleteMe'
   " Plug 'ervandew/supertab'
 call plug#end()
-
-if v:version >= '703'
-  au BufWritePre /tmp/* setlocal noundofile
+" }}
+" === Settings ===
+" Generic settings {{
+  set gdefault
+  set ignorecase
+  set smartcase
+  set number
+  set mouse=a
+  set expandtab
+  set tabstop=2
+  set shiftwidth=2
+  set textwidth=78
+  " Sets the default behavior when opening a new file to hide the current
+  " buffer and create a new one.
+  set hidden
+" }}
+" Apperance {{
+" Color scheme
+  set background=dark
+  colorscheme solarized
+" }}
+" === Tweaks ===
+" Clear last search highlight on ENTER {{
+  nnoremap <CR> :nohlsearch<CR><CR>
+" }}
+" Undo History {{
+  " No undo file for temporary files
+  augroup TempNoUndo
+    au BufWritePre /tmp/* setlocal noundofile
+    au BufWritePre ~/tmp/* setlocal noundofile
+  augroup END
   if has('win32')
     set undodir=$HOME/.vimundo
   else
     set undodir=~/tmp/.vim/undo
   endif
-  set undofile
-endif
-
-syntax on
-filetype plugin indent on
-
-" Perl-style regex for  find
-nnoremap / /\v
-vnoremap / /\v
-nnoremap ? ?\v
-vnoremap ? ?\v
-
-" Clear last search highlight on ENTER
-nnoremap <CR> :nohlsearch<CR><CR>
-
-set gdefault
-set ignorecase
-set smartcase
-set number
-set mouse=a
-set expandtab
-set tabstop=2
-set shiftwidth=2
-set textwidth=78
-
-" Sets the default behavior when opening a new file to hide the current buffer and create a new one.
-set hidden
-
-nmap <silent><F4> :NERDTreeToggle<CR>
-nmap <silent>L H<Leader><Leader>j
-
-nnoremap <leader>hr yypVr=
-
-nmap ZW :w<CR>
-
-" F5: Gundo
-nnoremap <silent><F5> :GundoToggle<CR>
-
-" Color scheme
-set background=dark
-colorscheme solarized
-
-if !has('win32')
-  " Remap clipboard
-  nmap <silent>\c   :let @+=@"<CR>
-  nmap <silent>\v   :let @"=@+<CR>
-endif
+set undofile
+" }}
+" Perl-style regex for slash-find {{
+  nnoremap / /\v
+  vnoremap / /\v
+  nnoremap ? ?\v
+  vnoremap ? ?\v
+" }}
+" === Key mappings ===
+" Plugin key mappings {{
+  nmap <silent><F4> :NERDTreeToggle<CR>
+  nmap <silent>L H<Leader><Leader>j
+  nnoremap <silent><F5> :GundoToggle<CR>
+" }}
+" General key mappings {{
+  " HR below the current line in the same length
+  nnoremap <leader>hr yypVr=
+  " Quick save
+  nmap ZW :w<CR>
+" }}
+" System clipboard {{
+  if !has('win32')
+    " Remap clipboard
+    nmap <silent>\c   :let @+=@"<CR>
+    nmap <silent>\v   :let @"=@+<CR>
+  endif
+" }}
