@@ -1,4 +1,5 @@
 *~
 .hg
 *.swp
-.vim/.netrwhist
+vim/.netrwhist
+vim/plugged

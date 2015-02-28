@@ -57,7 +57,30 @@ let g:ycm_key_list_previous_completion = ['<Up>']
 " SuperTab options
 let g:SuperTabDefaultCompletionType='context'
 
-execute pathogen#infect()
+" execute pathogen#infect()
+call plug#begin()
+  Plug 'tpope/vim-sensible'
+  Plug 'tpope/vim-surround'
+  Plug 'altercation/vim-colors-solarized'
+  Plug 'kien/ctrlp.vim'
+  Plug 'scrooloose/nerdtree'
+  Plug 'Lokaltog/vim-easymotion'
+  Plug 'sjl/gundo.vim'
+  Plug 'tomtom/tlib_vim'
+  Plug 'MarcWeber/vim-addon-mw-utils'
+  Plug 'SirVer/ultisnips'
+  Plug 'boazy/ZoomWin'
+  Plug 'jeffkreeftmeijer/vim-numbertoggle'
+  Plug 'scrooloose/nerdcommenter'
+  Plug 'scrooloose/syntastic'
+  Plug 'davidhalter/jedi-vim'
+  Plug 'plasticboy/vim-markdown'
+  Plug 'vim-ruby/vim-ruby'
+  Plug 'tacahiroy/ctrlp-funky'
+  Plug 'fholgado/minibufexpl.vim'
+  Plug 'Valloric/YouCompleteMe'
+  " Plug 'ervandew/supertab'
+call plug#end()
 
 if v:version >= '703'
   au BufWritePre /tmp/* setlocal noundofile
@@ -94,7 +117,7 @@ set textwidth=78
 " Sets the default behavior when opening a new file to hide the current buffer and create a new one.
 set hidden
 
-nmap <silent><F2> :NERDTreeToggle<CR>
+nmap <silent><F4> :NERDTreeToggle<CR>
 nmap <silent>L H<Leader><Leader>j
 
 nnoremap <leader>hr yypVr=
