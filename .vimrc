@@ -24,7 +24,7 @@ end
 let mapleader = ","
 
 " To disable a plugin, add it's bundle name to the following list
-let g:pathogen_disabled = []
+let g:pathogen_disabled = ['clang_complete', 'supertab']
 
 " for some reason the csscolor plugin is very slow when run on the terminal
 " but not in GVim, so disable it if no GUI is running
@@ -44,22 +44,15 @@ let g:ctrlp_cmd = 'CtrlPMixed'
 " Set numbertoggle trigger
 let g:NumberToggleTrigger="<C-l>"
 
-set conceallevel=2
-set concealcursor=vin
-
-" clang_complete options
-let g:clang_complete_auto=0
-let g:clang_snippets=1                  " Automatically add snippets with function parameters
-let g:clang_conceal_snippets=1          " Conceal the snippets
-let g:clang_auto_select=1               " Select the first entry in the popup menu
-if has('mac')
-  let g:clang_library_path="/Library/Developer/CommandLineTools/usr/lib"
-else
-  let g:clang_library_path="/usr/lib/"    " This is where libclang.so is found
-endif
+" set conceallevel=2
+" set concealcursor=vin
 
 " Disable preview scratch window
-set completeopt=menu,menuone
+set completeopt=longest,menu,menuone
+
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
 
 " SuperTab options
 let g:SuperTabDefaultCompletionType='context'
