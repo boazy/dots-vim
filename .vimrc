@@ -3,8 +3,25 @@
 " }}
 " === Preamble === 
 let mapleader = ","
-" Windowns compatibility {{
-if has('win32')
+" Detect OS {{
+  let s:os = "unknown"
+  if has("win32") || has('win64')
+    let s:os = "windows"
+  else
+    if has("unix")
+      let s:uname = substitute(system('uname'), "\n", "", "")
+      if s:uname == 'Darwin'
+        let s:os = "osx"
+      elseif s:uname =~ 'CYGWIN'
+        let s:os = "cygwin"
+      else
+        let s:os = s:uname
+      endif
+    endif
+  endif
+" }}
+" Windows compatibility {{
+if s:os == 'windows'
   set nocompatible
   source $VIMRUNTIME/vimrc_example.vim
   source $VIMRUNTIME/mswin.vim
@@ -29,13 +46,77 @@ end
 " }}
 " === Plugins ===
 " Plugin settings {{
-  " CtrlP options {{
-    let g:ctrlp_extensions = ['funky']
-    let g:ctrlp_cmd = 'CtrlPMixed'
+  " Vimproc {{
+    " Check vimproc.
+    function! BuildVimProc(info)
+      " info is a dictionary with 3 fields
+      " - name:   name of the plugin
+      " - status: 'installed', 'updated', or 'unchanged'
+      " - force:  set on PlugInstall! or PlugUpdate!
+      if a:info.status == 'installed' || a:info.force
+        if s:os == 'linux'
+          !make
+        elseif s:os == 'osx'
+          !make -f make_mac.mak
+        elseif s:os == 'windows'
+          !tools\\update-dll-mingw
+        elseif has('unix')
+          if executable('gmake')
+            !gmake
+          else
+            !make
+          endif
+        endif
+      endif
+    endfunction
   " }}
-  " YCM settings {{
+  " Unite.vim {{
+    let g:unite_source_history_yank_enable = 1
+    let g:unite_source_grep_max_candidates = 200
+    " Find best grep executable
+    if executable('ag')
+      " Use ag in unite grep source.
+      let g:unite_source_grep_command = 'ag'
+      let g:unite_source_grep_default_opts =
+      \ '-i --line-numbers --nocolor --nogroup --hidden --ignore ' .
+      \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+      let g:unite_source_grep_recursive_opt = ''
+    elseif executable('pt')
+      " Use pt in unite grep source.
+      " https://github.com/monochromegane/the_platinum_searcher
+      let g:unite_source_grep_command = 'pt'
+      let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+      let g:unite_source_grep_recursive_opt = ''
+    elseif executable('ack-grep')
+      " Use ack in unite grep source.
+      let g:unite_source_grep_command = 'ack-grep'
+      let g:unite_source_grep_default_opts =
+      \ '-i --no-heading --no-color -k -H'
+      let g:unite_source_grep_recursive_opt = ''
+    endif
+  " }}
+  " VimFiler settings {{
+    let g:vimfiler_as_default_explorer = 1
+  " }}
+  " YCM+UltiSnips settings {{
+    function! BuildYCM(info)
+      " info is a dictionary with 3 fields
+      " - name:   name of the plugin
+      " - status: 'installed', 'updated', or 'unchanged'
+      " - force:  set on PlugInstall! or PlugUpdate!
+      if a:info.status == 'installed' || a:info.force
+        !./install.sh
+      endif
+    endfunction
+    " Conceal for snippets
+    set conceallevel=2 concealcursor=i
     " Disable preview scratch window
     set completeopt=longest,menu,menuone
+
+    " Try to set compatible ultisnips triggers
+    let g:UltiSnipsExpandTrigger="<tab>"
+    let g:UltiSnipsJumpForwardTrigger="<Tab>"
+    let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
     let g:ycm_global_ycm_extra_conf = '~/dots/vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
     let g:ycm_key_list_select_completion = ['<Down>']
@@ -47,31 +128,56 @@ end
   " NumberToggle settings {{
     let g:NumberToggleTrigger="<C-l>"
   " }}
+  " vim-airline settings {{
+    let g:airline_powerline_fonts = 1
+    let g:airline#extensions#tabline#enabled = 1
+  " }}
+  " Emmet.vim settings {{
+    let g:user_emmet_install_global = 0
+    autocmd FileType html,css EmmetInstall
+  " }}
 " }}
 " Load plugins {{
 call plug#begin()
-  Plug 'tpope/vim-sensible'
-  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-sensible'                 " Sensible defaults for vim
+  Plug 'tpope/vim-surround'                 " csXX for quotes, braces, etc.
+  Plug 'tpope/vim-unimpaired'               " Pair commands
+  Plug 'tpope/vim-eunuchs'                  " Shell tools
+  Plug 'dr-chip-vim-scripts/ZoomWin'        " Zoom in/out windows with <c-w>o
+  Plug 'jeffkreeftmeijer/vim-numbertoggle'  " Relative line numbers
   Plug 'altercation/vim-colors-solarized'
-  Plug 'kien/ctrlp.vim'
-  Plug 'scrooloose/nerdtree'
   Plug 'Lokaltog/vim-easymotion'
-  Plug 'sjl/gundo.vim'
-  Plug 'tomtom/tlib_vim'
-  Plug 'MarcWeber/vim-addon-mw-utils'
+  Plug 'rking/ag.vim', { 'on': 'Ag' }
+  Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
   Plug 'SirVer/ultisnips'
-  Plug 'boazy/ZoomWin'
-  Plug 'jeffkreeftmeijer/vim-numbertoggle'
+  Plug 'honza/vim-snippets'
+  Plug 'Shougo/vimproc.vim', { 'do': function('BuildVimProc') }
+  Plug 'Shougo/Unite.vim'
+  Plug 'Shougo/vimfiler.vim'
   Plug 'scrooloose/nerdcommenter'
   Plug 'scrooloose/syntastic'
-  Plug 'davidhalter/jedi-vim'
-  Plug 'plasticboy/vim-markdown'
-  Plug 'vim-ruby/vim-ruby'
-  Plug 'tacahiroy/ctrlp-funky'
-  Plug 'fholgado/minibufexpl.vim'
-  Plug 'Valloric/YouCompleteMe'
-  " Plug 'ervandew/supertab'
+  Plug 'bling/vim-airline'
+  "Plug 'ervandew/supertab'
+  if s:os != 'windows'
+    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+  endif
+
+  " --- Type-specific ---
+  Plug 'tpope/vim-git', { 'for': 'git' }
+  Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+  Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+  Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+  Plug 'mattn/emmet-vim', { 'for': 'html' }
+  Plug 'othree/html5.vim', { 'for': 'html' }
 call plug#end()
+" }}
+" Plugin Checks {{
+  try
+    call vimproc#version()
+    let s:has_vimproc = 1
+  catch
+    let s:has_vimproc = 0
+  endtry
 " }}
 " === Settings ===
 " Generic settings {{
@@ -84,9 +190,16 @@ call plug#end()
   set tabstop=2
   set shiftwidth=2
   set textwidth=78
+  set spell
+  "set virtualedit=onemore " Allow for cursor beyond last character
   " Sets the default behavior when opening a new file to hide the current
   " buffer and create a new one.
   set hidden
+  " Make messages shorter than default ([+] for [Modified] and [RO] for
+  " [ReadOnly])
+  set shortmess+=filmnrxoOtT
+  " Unixish behavior even on Windows (converts to LF and slashes)
+  set viewoptions=folds,options,cursor,unix,slash
 " }}
 " Apperance {{
 " Color scheme
@@ -94,6 +207,16 @@ call plug#end()
   colorscheme solarized
 " }}
 " === Tweaks ===
+" Grabbed from SPF13 {{
+  " Most prefer to automatically switch to the current file directory when
+  " a new buffer is opened; to prevent this behavior, add the following to
+  " your .vimrc.before.local file:
+  "   let g:spf13_no_autochdir = 1
+  if !exists('g:spf13_no_autochdir')
+      autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
+      " Always switch to the current file directory
+  endif
+" }}
 " Clear last search highlight on ENTER {{
   nnoremap <CR> :nohlsearch<CR><CR>
 " }}
@@ -103,7 +226,7 @@ call plug#end()
     au BufWritePre /tmp/* setlocal noundofile
     au BufWritePre ~/tmp/* setlocal noundofile
   augroup END
-  if has('win32')
+  if s:os == 'windows'
     set undodir=$HOME/.vimundo
   else
     set undodir=~/tmp/.vim/undo
@@ -116,9 +239,16 @@ set undofile
   nnoremap ? ?\v
   vnoremap ? ?\v
 " }}
-" === Key mappings ===
+" === Key mappings ==
 " Plugin key mappings {{
-  nmap <silent><F4> :NERDTreeToggle<CR>
+  " Todo, add neo_mru, buffertab, build string accordingly
+  nnoremap gb :<C-u>Unite -start-insert buffer<CR>
+  if exists('s:has_vimproc') && s:has_vimproc
+    nnoremap <c-p> :<C-u>Unite -start-insert file_rec/async buffer<CR>
+  else
+    nnoremap <c-p> :<C-u>Unite -start-insert file_rec buffer<CR>
+  endif
+  nmap <silent><F4> :VimFilerExplorer<CR>
   nmap <silent>L H<Leader><Leader>j
   nnoremap <silent><F5> :GundoToggle<CR>
 " }}
@@ -129,7 +259,7 @@ set undofile
   nmap ZW :w<CR>
 " }}
 " System clipboard {{
-  if !has('win32')
+  if s:os != 'windows'
     " Remap clipboard
     nmap <silent>\c   :let @+=@"<CR>
     nmap <silent>\v   :let @"=@+<CR>
