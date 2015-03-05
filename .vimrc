@@ -201,10 +201,15 @@ call plug#end()
   " Unixish behavior even on Windows (converts to LF and slashes)
   set viewoptions=folds,options,cursor,unix,slash
 " }}
-" Apperance {{
+" Appearance {{
 " Color scheme
   set background=dark
   colorscheme solarized
+" }}
+" GUI settings {{
+  if s:os == "osx"
+    set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h11
+  endif
 " }}
 " === Tweaks ===
 " Grabbed from SPF13 {{
