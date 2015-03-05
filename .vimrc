@@ -256,7 +256,9 @@ set undofile
   " HR below the current line in the same length
   nnoremap <leader>hr yypVr=
   " Quick save
-  nmap ZW :w<CR>
+  nnoremap ZW :w<CR>
+  " select last pasted text with 'gp'
+  nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 " }}
 " System clipboard {{
   if s:os != 'windows'
