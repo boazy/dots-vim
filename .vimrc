@@ -142,9 +142,11 @@ call plug#begin()
   Plug 'tpope/vim-sensible'                 " Sensible defaults for vim
   Plug 'tpope/vim-surround'                 " csXX for quotes, braces, etc.
   Plug 'tpope/vim-unimpaired'               " Pair commands
-  Plug 'tpope/vim-eunuchs'                  " Shell tools
+  Plug 'tpope/vim-eunuch'                   " Shell tools
   Plug 'dr-chip-vim-scripts/ZoomWin'        " Zoom in/out windows with <c-w>o
   Plug 'jeffkreeftmeijer/vim-numbertoggle'  " Relative line numbers
+  Plug 'kana/vim-textobj-user'              " Library for custom text objects 
+  Plug 'whatyouhide/vim-textobj-xmlattr'    " Xml Attribute text object (ax, ix)
   Plug 'altercation/vim-colors-solarized'
   Plug 'Lokaltog/vim-easymotion'
   Plug 'rking/ag.vim', { 'on': 'Ag' }
@@ -190,7 +192,8 @@ call plug#end()
   set tabstop=2
   set shiftwidth=2
   set textwidth=78
-  set spell
+  set nospell
+  set linebreak
   "set virtualedit=onemore " Allow for cursor beyond last character
   " Sets the default behavior when opening a new file to hide the current
   " buffer and create a new one.
