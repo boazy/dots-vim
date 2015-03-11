@@ -250,6 +250,8 @@ set undofile
 " === Key mappings ==
 " Plugin key mappings {{
   " Todo, add neo_mru, buffertab, build string accordingly
+  nnoremap <Leader>u :<C-u>Unite -start-insert<CR>
+  nnoremap gy :<C-u>Unite -start-insert history/yank<CR>
   nnoremap gb :<C-u>Unite -start-insert buffer<CR>
   if exists('s:has_vimproc') && s:has_vimproc
     nnoremap <c-p> :<C-u>Unite -start-insert file_rec/async buffer<CR>
