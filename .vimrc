@@ -137,6 +137,12 @@ end
     let g:user_emmet_install_global = 0
     autocmd FileType html,css EmmetInstall
   " }}
+  " Syntastic settings {{
+    " Automatically populate location list upon loading, so we can jump to
+    " error warnings.
+    " Since we have vim-unimpaired, jumping is as simple as ']l' and '[l'
+    let g:syntastic_always_populate_loc_list = 1
+  " }}
 " }}
 " Load plugins {{
 call plug#begin()
