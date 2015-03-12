@@ -237,18 +237,33 @@ call plug#end()
 " Clear last search highlight on ENTER {{
   nnoremap <CR> :nohlsearch<CR><CR>
 " }}
+" Directories for Vim support files {{
+  function! MakeDirP (dir)
+    if !isdirectory(a:dir)
+      call mkdir(a:dir, 'p')
+    endif
+  endfunction
+
+  if s:os == 'windows'
+    set directory=C:/Temp/User/.vim/swap
+    set backupdir=C:/Temp/User/.vim/backup
+    set undodir=C:/Temp/User/.vim/undo
+  else
+    set directory=$HOME/tmp/.vim/swap
+    set backupdir=$HOME/tmp/.vim/backup
+    set undodir=$HOME/tmp/.vim/undo
+  endif
+  call MakeDirP(&directory)
+  call MakeDirP(&backupdir)
+  call MakeDirP(&undodir)
+" }}
 " Undo History {{
   " No undo file for temporary files
   augroup TempNoUndo
     au BufWritePre /tmp/* setlocal noundofile
     au BufWritePre ~/tmp/* setlocal noundofile
   augroup END
-  if s:os == 'windows'
-    set undodir=$HOME/.vimundo
-  else
-    set undodir=~/tmp/.vim/undo
-  endif
-set undofile
+  set undofile
 " }}
 " Perl-style regex for slash-find {{
   nnoremap / /\v
