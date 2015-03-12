@@ -26,7 +26,8 @@ if s:os == 'windows'
   source $VIMRUNTIME/vimrc_example.vim
   source $VIMRUNTIME/mswin.vim
   behave mswin
-
+  set encoding=utf-8
+  
   set diffexpr=MyDiff()
   function MyDiff()
     let opt = '-a --binary '
@@ -212,6 +213,8 @@ call plug#end()
 " GUI settings {{
   if s:os == "osx"
     set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h11
+  elseif s:os == "windows"
+    set guifont=Powerline_Consolas:h11
   endif
 " }}
 " === Tweaks ===
