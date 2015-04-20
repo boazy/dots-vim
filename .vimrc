@@ -135,7 +135,6 @@ end
   " }}
   " Emmet.vim settings {{
     let g:user_emmet_install_global = 0
-    autocmd FileType html,css EmmetInstall
   " }}
   " Syntastic settings {{
     " Automatically populate location list upon loading, so we can jump to
@@ -187,6 +186,10 @@ call plug#end()
   catch
     let s:has_vimproc = 0
   endtry
+" }}
+" Plugin Triggers {{
+  " Install Emmet hooks only for HTML and CSS files
+  autocmd FileType html,css EmmetInstall
 " }}
 " === Settings ===
 " Generic settings {{
