@@ -268,11 +268,11 @@ call plug#end()
   augroup END
   set undofile
 " }}
-" Perl-style regex for slash-find {{
-  nnoremap / /\v
-  vnoremap / /\v
-  nnoremap ? ?\v
-  vnoremap ? ?\v
+" Perl-style (very magic) regex for slash-find [disabled] {{
+"  nnoremap / /\v
+"  vnoremap / /\v
+"  nnoremap ? ?\v
+"  vnoremap ? ?\v
 " }}
 " === Key mappings ==
 " Plugin key mappings {{
