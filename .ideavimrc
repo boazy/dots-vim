@@ -1,0 +1,45 @@
+" Header and vim settings {{
+" vim: set sw=2 ts=2 et tw=78 foldmarker={{,}} foldlevel=0 foldmethod=marker spell:
+" }}
+" === Preamble === 
+let mapleader = ","
+" === Settings ===
+" Generic settings {{
+  set gdefault
+  set ignorecase
+  set smartcase
+  set number
+  set expandtab
+  set linebreak
+  "set virtualedit=onemore " Allow for cursor beyond last character
+  " Sets the default behavior when opening a new file to hide the current
+  " buffer and create a new one.
+  set hidden
+  " Make messages shorter than default ([+] for [Modified] and [RO] for
+  " [ReadOnly])
+  set shortmess+=filmnrxoOtT
+  " Unixish behavior even on Windows (converts to LF and slashes)
+  set viewoptions=folds,options,cursor,unix,slash
+" }}
+" Perl-style (very magic) regex for slash-find [disabled] {{
+"  nnoremap / /\v
+"  vnoremap / /\v
+"  nnoremap ? ?\v
+"  vnoremap ? ?\v
+" }}
+" === Key mappings ==
+" Idea key mappings {{
+" }}
+" General key mappings {{
+  " HR below the current line in the same length
+  nnoremap <leader>hr yypVr=
+  " Quick save
+  nnoremap ZW :w<CR>
+  " select last pasted text with 'gp'
+  nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+" }}
+" System clipboard {{
+  " Remap clipboard
+  nmap <silent>\c   :let @+=@"<CR>
+  nmap <silent>\v   :let @"=@+<CR>
+" }}
