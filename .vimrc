@@ -274,6 +274,12 @@ call plug#end()
 "  nnoremap ? ?\v
 "  vnoremap ? ?\v
 " }}
+" Perl-style regex for slash-find {{
+  nnoremap / /\v
+  vnoremap / /\v
+  nnoremap ? ?\v
+  vnoremap ? ?\v
+" }}
 " === Key mappings ==
 " Plugin key mappings {{
   " Todo, add neo_mru, buffertab, build string accordingly
@@ -285,9 +291,11 @@ call plug#end()
   else
     nnoremap <c-p> :<C-u>Unite -start-insert file_rec buffer<CR>
   endif
-  nmap <silent><F4> :VimFilerExplorer<CR>
   nmap <silent>L H<Leader><Leader>j
   nnoremap <silent><F5> :GundoToggle<CR>
+" }}
+" VimFiler key mappings {{
+  nmap <silent><F4> :VimFilerExplorer<CR>
 " }}
 " General key mappings {{
   " HR below the current line in the same length
