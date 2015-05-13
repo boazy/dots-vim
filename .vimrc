@@ -137,6 +137,8 @@ end
     let g:user_emmet_install_global = 0
   " }}
   " Syntastic settings {{
+    " Use ESLint for better ES6 and JSX support
+    let g:syntastic_javascript_checkers = ['eslint']
     " Automatically populate location list upon loading, so we can jump to
     " error warnings.
     " Since we have vim-unimpaired, jumping is as simple as ']l' and '[l'
@@ -145,15 +147,22 @@ end
 " }}
 " Load plugins {{
 call plug#begin()
-  Plug 'tpope/vim-sensible'                 " Sensible defaults for vim
-  Plug 'tpope/vim-surround'                 " csXX for quotes, braces, etc.
-  Plug 'tpope/vim-unimpaired'               " Pair commands
-  Plug 'tpope/vim-eunuch'                   " Shell tools
-  Plug 'dr-chip-vim-scripts/ZoomWin'        " Zoom in/out windows with <c-w>o
-  Plug 'jeffkreeftmeijer/vim-numbertoggle'  " Relative line numbers
-  Plug 'kana/vim-textobj-user'              " Library for custom text objects 
-  Plug 'whatyouhide/vim-textobj-xmlattr'    " Xml Attribute text object (ax, ix)
-  Plug 'altercation/vim-colors-solarized'
+  Plug 'tpope/vim-sensible'                  " Sensible defaults for vim
+  Plug 'tpope/vim-surround'                  " csXX for quotes, braces, etc.
+  Plug 'tpope/vim-unimpaired'                " Pair commands
+  Plug 'tpope/vim-eunuch'                    " Shell tools
+  Plug 'dr-chip-vim-scripts/ZoomWin'         " Zoom in/out windows with <c-w>o
+  Plug 'jeffkreeftmeijer/vim-numbertoggle'   " Relative line numbers
+  Plug 'kana/vim-textobj-user'               " Library for custom text objects 
+  Plug 'kana/vim-textobj-fold'               " Fold text object (az/iz)
+  Plug 'kana/vim-textobj-syntax'             " Syntax highlighted item (ay/iy)
+  Plug 'sgur/vim-textobj-parameter'          " Comma-separated arguments (a,/i,)
+  Plug 'glts/vim-textobj-comment'            " Comments text object (ac/ic)
+  Plug 'whatyouhide/vim-textobj-xmlattr'     " Xml Attribute text object (ax/ix)
+  Plug 'Julian/vim-textobj-variable-segment' " Variable name segment (av/iv)
+  Plug 'altercation/vim-colors-solarized'    " Solarized color scheme (needs terminal support)
+  Plug 'pangloss/vim-javascript'             " Better JavaScript syntax
+  Plug 'mxw/vim-jsx'                         " JSX support
   Plug 'Lokaltog/vim-easymotion'
   Plug 'rking/ag.vim', { 'on': 'Ag' }
   Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
