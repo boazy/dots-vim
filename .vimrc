@@ -82,12 +82,16 @@ end
       \ '-i --line-numbers --nocolor --nogroup --hidden --ignore ' .
       \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
       let g:unite_source_grep_recursive_opt = ''
+      " Use ag for normal file search with ignore support
+      let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
     elseif executable('pt')
       " Use pt in unite grep source.
       " https://github.com/monochromegane/the_platinum_searcher
       let g:unite_source_grep_command = 'pt'
       let g:unite_source_grep_default_opts = '--nogroup --nocolor'
       let g:unite_source_grep_recursive_opt = ''
+      " Use pt for normal file search with ignore support
+      let g:unite_source_rec_async_command='pt --nocolor --nogroup -g ""'
     elseif executable('ack-grep')
       " Use ack in unite grep source.
       let g:unite_source_grep_command = 'ack-grep'
@@ -147,13 +151,16 @@ end
 " }}
 " Load plugins {{
 call plug#begin()
+  Plug 'tpope/vim-repeat'                    " Repeat support for complex mappings
   Plug 'tpope/vim-sensible'                  " Sensible defaults for vim
   Plug 'tpope/vim-surround'                  " csXX for quotes, braces, etc.
   Plug 'tpope/vim-unimpaired'                " Pair commands
   Plug 'tpope/vim-eunuch'                    " Shell tools
+  Plug 'vim-scripts/marvim'                  " Macros Repository
+  Plug 'godlygeek/tabular'                   " Editing and aligning tabular data easily
   Plug 'dr-chip-vim-scripts/ZoomWin'         " Zoom in/out windows with <c-w>o
   Plug 'jeffkreeftmeijer/vim-numbertoggle'   " Relative line numbers
-  Plug 'kana/vim-textobj-user'               " Library for custom text objects 
+  Plug 'kana/vim-textobj-user'               " Library for custom text objects
   Plug 'kana/vim-textobj-fold'               " Fold text object (az/iz)
   Plug 'kana/vim-textobj-syntax'             " Syntax highlighted item (ay/iy)
   Plug 'sgur/vim-textobj-parameter'          " Comma-separated arguments (a,/i,)
@@ -162,6 +169,7 @@ call plug#begin()
   Plug 'Julian/vim-textobj-variable-segment' " Variable name segment (av/iv)
   Plug 'altercation/vim-colors-solarized'    " Solarized color scheme (needs terminal support)
   Plug 'pangloss/vim-javascript'             " Better JavaScript syntax
+  Plug 'gkz/vim-ls'                          " LiveScript syntax and make
   Plug 'mxw/vim-jsx'                         " JSX support
   Plug 'Lokaltog/vim-easymotion'
   Plug 'rking/ag.vim', { 'on': 'Ag' }
@@ -184,7 +192,7 @@ call plug#begin()
   Plug 'davidhalter/jedi-vim', { 'for': 'python' }
   Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
   Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-  Plug 'mattn/emmet-vim', { 'for': 'html' }
+  Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'javascript.jsx'] }
   Plug 'othree/html5.vim', { 'for': 'html' }
 call plug#end()
 " }}
@@ -198,7 +206,7 @@ call plug#end()
 " }}
 " Plugin Triggers {{
   " Install Emmet hooks only for HTML and CSS files
-  autocmd FileType html,css EmmetInstall
+  autocmd FileType html,css,javascript.jsx EmmetInstall
 " }}
 " === Settings ===
 " Generic settings {{
@@ -240,7 +248,7 @@ call plug#end()
   " Most prefer to automatically switch to the current file directory when
   " a new buffer is opened; to prevent this behavior, add the following to
   " your .vimrc.before.local file:
-  "   let g:spf13_no_autochdir = 1
+  let g:spf13_no_autochdir = 1
   if !exists('g:spf13_no_autochdir')
       autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
       " Always switch to the current file directory
