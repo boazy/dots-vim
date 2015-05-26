@@ -158,6 +158,7 @@ call plug#begin()
   Plug 'tpope/vim-eunuch'                    " Shell tools
   Plug 'vim-scripts/marvim'                  " Macros Repository
   Plug 'godlygeek/tabular'                   " Editing and aligning tabular data easily
+  Plug 'boazy/drchip-vis'                    " Vim Block Commands (B and S)
   Plug 'dr-chip-vim-scripts/ZoomWin'         " Zoom in/out windows with <c-w>o
   Plug 'jeffkreeftmeijer/vim-numbertoggle'   " Relative line numbers
   Plug 'kana/vim-textobj-user'               " Library for custom text objects
