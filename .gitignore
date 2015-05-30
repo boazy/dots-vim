@@ -1,6 +1,5 @@
 *~
-.hg
 *.swp
-vim/.netrwhist
-vim/plugged
-vim/spell/*.spl
+.vim/.netrwhist
+.vim/plugged
+.vim/spell/*.spl
