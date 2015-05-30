@@ -163,6 +163,7 @@ call plug#begin()
   Plug 'jeffkreeftmeijer/vim-numbertoggle'   " Relative line numbers
   Plug 'kana/vim-textobj-user'               " Library for custom text objects
   Plug 'kana/vim-textobj-fold'               " Fold text object (az/iz)
+  Plug 'kana/vim-textobj-indent'             " Idented blocks (ai/ii)
   Plug 'kana/vim-textobj-syntax'             " Syntax highlighted item (ay/iy)
   Plug 'sgur/vim-textobj-parameter'          " Comma-separated arguments (a,/i,)
   Plug 'glts/vim-textobj-comment'            " Comments text object (ac/ic)
@@ -172,6 +173,8 @@ call plug#begin()
   Plug 'pangloss/vim-javascript'             " Better JavaScript syntax
   Plug 'gkz/vim-ls'                          " LiveScript syntax and make
   Plug 'mxw/vim-jsx'                         " JSX support
+  Plug 'wavded/vim-stylus'                   " Stylus support
+  Plug 'digitaltoad/vim-jade'                " Jade support
   Plug 'Lokaltog/vim-easymotion'
   Plug 'rking/ag.vim', { 'on': 'Ag' }
   Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
