@@ -1,0 +1,16 @@
+*~
+*.swp
+/.vim/.netrwhist
+/.vim/plugged
+/.vim/spell/*.spl
+
+/*
+/.gitignore.d/*
+!/.eslintrc
+!/.gitignore.d
+!/.gitignore.d/vim
+!/.gvimrc
+!/.ideavimrc
+!/.vim
+!/.vimrc
+
