@@ -123,7 +123,7 @@ end
     let g:UltiSnipsJumpForwardTrigger="<Tab>"
     let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
-    let g:ycm_global_ycm_extra_conf = '~/dots/vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+    let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
     let g:ycm_key_list_select_completion = ['<Down>']
     let g:ycm_key_list_previous_completion = ['<Up>']
   " }}
