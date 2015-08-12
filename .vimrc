@@ -148,6 +148,10 @@ end
     " Since we have vim-unimpaired, jumping is as simple as ']l' and '[l'
     let g:syntastic_always_populate_loc_list = 1
   " }}
+  " JSDoc settings {{
+    " Disable default mapping <C-l>
+    let g:jsdoc_default_mapping = 0
+  " }}
 " }}
 " Load plugins {{
 call plug#begin()
@@ -160,7 +164,6 @@ call plug#begin()
   Plug 'godlygeek/tabular'                   " Editing and aligning tabular data easily
   Plug 'boazy/drchip-vis'                    " Vim Block Commands (B and S)
   Plug 'dr-chip-vim-scripts/ZoomWin'         " Zoom in/out windows with <c-w>o
-  Plug 'jeffkreeftmeijer/vim-numbertoggle'   " Relative line numbers
   Plug 'kana/vim-textobj-user'               " Library for custom text objects
   Plug 'kana/vim-textobj-fold'               " Fold text object (az/iz)
   Plug 'kana/vim-textobj-indent'             " Idented blocks (ai/ii)
@@ -171,11 +174,13 @@ call plug#begin()
   Plug 'Julian/vim-textobj-variable-segment' " Variable name segment (av/iv)
   Plug 'altercation/vim-colors-solarized'    " Solarized color scheme (needs terminal support)
   Plug 'pangloss/vim-javascript'             " Better JavaScript syntax
+  Plug 'heavenshell/vim-jsdoc'               " Generate JSDoc
   Plug 'gkz/vim-ls'                          " LiveScript syntax and make
   Plug 'mxw/vim-jsx'                         " JSX support
   Plug 'wavded/vim-stylus'                   " Stylus support
   Plug 'digitaltoad/vim-jade'                " Jade support
-  Plug 'Lokaltog/vim-easymotion'
+  Plug 'jeffkreeftmeijer/vim-numbertoggle'   " Relative line numbers
+  Plug 'Lokaltog/vim-easymotion'             " Motion Hints
   Plug 'rking/ag.vim', { 'on': 'Ag' }
   Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
   Plug 'SirVer/ultisnips'
@@ -303,20 +308,23 @@ call plug#end()
 " }}
 " === Key mappings ==
 " Plugin key mappings {{
-  " Todo, add neo_mru, buffertab, build string accordingly
-  nnoremap <Leader>u :<C-u>Unite -start-insert<CR>
-  nnoremap gy :<C-u>Unite -start-insert history/yank<CR>
-  nnoremap gb :<C-u>Unite -start-insert buffer<CR>
-  if exists('s:has_vimproc') && s:has_vimproc
-    nnoremap <c-p> :<C-u>Unite -start-insert file_rec/async buffer<CR>
-  else
-    nnoremap <c-p> :<C-u>Unite -start-insert file_rec buffer<CR>
-  endif
+  " Unite.vim key mappings {{
+    " Todo, add neo_mru, buffertab, build string accordingly
+    nnoremap <Leader>u :<C-u>Unite -start-insert<CR>
+    nnoremap gy :<C-u>Unite -start-insert history/yank<CR>
+    nnoremap gb :<C-u>Unite -start-insert buffer<CR>
+    if exists('s:has_vimproc') && s:has_vimproc
+      nnoremap <c-p> :<C-u>Unite -start-insert file_rec/async buffer<CR>
+    else
+      nnoremap <c-p> :<C-u>Unite -start-insert file_rec buffer<CR>
+    endif
+  " }}
+  " VimFiler key mappings {{
+    nmap <silent><F4> :VimFilerExplorer<CR>
+  " }}
   nmap <silent>L H<Leader><Leader>j
   nnoremap <silent><F5> :GundoToggle<CR>
-" }}
-" VimFiler key mappings {{
-  nmap <silent><F4> :VimFilerExplorer<CR>
+  autocmd filetype javascript nnoremap <silent>sd :JsDoc<CR>
 " }}
 " General key mappings {{
   " HR below the current line in the same length
