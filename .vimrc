@@ -174,6 +174,7 @@ call plug#begin()
   Plug 'Julian/vim-textobj-variable-segment' " Variable name segment (av/iv)
   Plug 'altercation/vim-colors-solarized'    " Solarized color scheme (needs terminal support)
   Plug 'pangloss/vim-javascript'             " Better JavaScript syntax
+  Plug 'gkz/vim-ls'                          " LiveScript for Vim
   Plug 'heavenshell/vim-jsdoc'               " Generate JSDoc
   Plug 'gkz/vim-ls'                          " LiveScript syntax and make
   Plug 'mxw/vim-jsx'                         " JSX support
