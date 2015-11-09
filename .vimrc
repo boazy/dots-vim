@@ -208,6 +208,7 @@ call plug#begin()
   Plug 'scrooloose/nerdcommenter'                               " Commenting bindings for many languages
   Plug 'scrooloose/syntastic'                                   " Syntax highlighting for many languages
   Plug 'bling/vim-airline'                                      " Lightweight status line
+  Plug 'gkz/vim-ls'                                             " LiveScript for Vim
   if s:os != 'windows'
     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
   endif
