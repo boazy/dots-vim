@@ -72,6 +72,14 @@ end
     endfunction
   " }}
   " Unite.vim {{
+    function s:my_unite_settings()
+      "let b:unite_close=0
+      "imap <silent><buffer> <S-Tab> :let b:unite_no_close=1<CR><ESC>
+      "au InsertLeave <buffer> if !(exists('b:unite_no_close') && b:unite_no_close) | norm q | endif
+      "au InsertEnter <buffer> let b:unite_no_close=0
+    endfunction
+    autocmd FileType unite call s:my_unite_settings()
+
     let g:unite_source_history_yank_enable = 1
     let g:unite_source_grep_max_candidates = 200
     " Find best grep executable
@@ -83,7 +91,7 @@ end
       \  '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
       let g:unite_source_grep_recursive_opt = ''
       " Use ag for normal file search with ignore support
-      let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
+      let g:unite_source_rec_async_command = ['ag', '--nocolor', '--nogroup', '-g', '']
     elseif executable('pt')
       " Use pt in unite grep source.
       " https://github.com/monochromegane/the_platinum_searcher
@@ -91,16 +99,21 @@ end
       let g:unite_source_grep_default_opts = '--nogroup --nocolor'
       let g:unite_source_grep_recursive_opt = ''
       " Use pt for normal file search with ignore support
-      let g:unite_source_rec_async_command='pt --nocolor --nogroup -g ""'
+      let g:unite_source_rec_async_command = ['pt', '--nocolor', '--nogroup', '-g', '""']
     elseif executable('ack-grep')
       " Use ack in unite grep source.
       let g:unite_source_grep_command = 'ack-grep'
-      let g:unite_source_grep_default_opts =
-      \ '-i --no-heading --no-color -k -H'
+      let g:unite_source_grep_default_opts = '-i --no-heading --no-color -k -H'
       let g:unite_source_grep_recursive_opt = ''
     endif
   " }}
   " VimFiler settings {{
+    function s:my_vimfiler_settings()
+      setlocal nonumber
+      setlocal norelativenumber
+    endfunction
+    autocmd FileType vimfiler call s:my_vimfiler_settings()
+
     let g:vimfiler_as_default_explorer = 1
   " }}
   " YCM+UltiSnips settings {{
@@ -155,43 +168,46 @@ end
 " }}
 " Load plugins {{
 call plug#begin()
-  Plug 'tpope/vim-repeat'                    " Repeat support for complex mappings
-  Plug 'tpope/vim-sensible'                  " Sensible defaults for vim
-  Plug 'tpope/vim-surround'                  " csXX for quotes, braces, etc.
-  Plug 'tpope/vim-unimpaired'                " Pair commands
-  Plug 'tpope/vim-eunuch'                    " Shell tools
-  Plug 'vim-scripts/marvim'                  " Macros Repository
-  Plug 'godlygeek/tabular'                   " Editing and aligning tabular data easily
-  Plug 'boazy/drchip-vis'                    " Vim Block Commands (B and S)
-  Plug 'dr-chip-vim-scripts/ZoomWin'         " Zoom in/out windows with <c-w>o
-  Plug 'kana/vim-textobj-user'               " Library for custom text objects
-  Plug 'kana/vim-textobj-fold'               " Fold text object (az/iz)
-  Plug 'kana/vim-textobj-indent'             " Idented blocks (ai/ii)
-  Plug 'kana/vim-textobj-syntax'             " Syntax highlighted item (ay/iy)
-  Plug 'sgur/vim-textobj-parameter'          " Comma-separated arguments (a,/i,)
-  Plug 'glts/vim-textobj-comment'            " Comments text object (ac/ic)
-  Plug 'whatyouhide/vim-textobj-xmlattr'     " Xml Attribute text object (ax/ix)
-  Plug 'Julian/vim-textobj-variable-segment' " Variable name segment (av/iv)
-  Plug 'altercation/vim-colors-solarized'    " Solarized color scheme (needs terminal support)
-  Plug 'pangloss/vim-javascript'             " Better JavaScript syntax
-  Plug 'heavenshell/vim-jsdoc'               " Generate JSDoc
-  Plug 'gkz/vim-ls'                          " LiveScript syntax and make
-  Plug 'mxw/vim-jsx'                         " JSX support
-  Plug 'wavded/vim-stylus'                   " Stylus support
-  Plug 'digitaltoad/vim-jade'                " Jade support
-  Plug 'jeffkreeftmeijer/vim-numbertoggle'   " Relative line numbers
-  Plug 'Lokaltog/vim-easymotion'             " Motion Hints
-  Plug 'rking/ag.vim', { 'on': 'Ag' }
-  Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-  Plug 'SirVer/ultisnips'
-  Plug 'honza/vim-snippets'
-  Plug 'Shougo/vimproc.vim', { 'do': function('BuildVimProc') }
-  Plug 'Shougo/Unite.vim'
-  Plug 'Shougo/vimfiler.vim'
-  Plug 'scrooloose/nerdcommenter'
-  Plug 'scrooloose/syntastic'
-  Plug 'bling/vim-airline'
-  "Plug 'ervandew/supertab'
+  Plug 'tpope/vim-repeat'                                       " Repeat support for complex mappings
+  Plug 'tpope/vim-sensible'                                     " Sensible defaults for Vim
+  Plug 'tpope/vim-surround'                                     " csXX for quotes, braces, etc.
+  Plug 'tpope/vim-unimpaired'                                   " Pair commands
+  Plug 'tpope/vim-eunuch'                                       " Shell tools
+  Plug 'tpope/vim-fugitive'                                     " Git control from Vim
+  Plug 'vim-scripts/marvim'                                     " Macros Repository
+  Plug 'godlygeek/tabular'                                      " Editing and aligning tabular data easily
+  Plug 'boazy/drchip-vis'                                       " Vim Block Commands (B and S)
+  Plug 'dr-chip-vim-scripts/ZoomWin'                            " Zoom in/out windows with <c-w>o
+  Plug 'kana/vim-textobj-user'                                  " Library for custom text objects
+  Plug 'kana/vim-textobj-fold'                                  " Fold text object (az/iz)
+  Plug 'kana/vim-textobj-indent'                                " Idented blocks (ai/ii)
+  Plug 'kana/vim-textobj-syntax'                                " Syntax highlighted item (ay/iy)
+  Plug 'sgur/vim-textobj-parameter'                             " Comma-separated arguments (a,/i,)
+  Plug 'glts/vim-textobj-comment'                               " Comments text object (ac/ic)
+  Plug 'whatyouhide/vim-textobj-xmlattr'                        " Xml Attribute text object (ax/ix)
+  Plug 'Julian/vim-textobj-variable-segment'                    " Variable name segment (av/iv)
+  Plug 'altercation/vim-colors-solarized'                       " Solarized color scheme (needs terminal support)
+  Plug 'pangloss/vim-javascript'                                " Better JavaScript syntax
+  Plug 'heavenshell/vim-jsdoc'                                  " Generate JSDoc
+  Plug 'gkz/vim-ls'                                             " LiveScript syntax and make
+  Plug 'mxw/vim-jsx'                                            " JSX support
+  Plug 'wavded/vim-stylus'                                      " Stylus support
+  Plug 'digitaltoad/vim-jade'                                   " Jade support
+  Plug 'jeffkreeftmeijer/vim-numbertoggle'                      " Relative line numbers
+  Plug 'Lokaltog/vim-easymotion'                                " Motion Hints
+  Plug 'junegunn/vim-easy-align'                                " Easy align
+  Plug 'rizzatti/dash.vim'                                      " Dash support
+  Plug 'chrisbra/SudoEdit.vim'                                  " Read/write files with admin/root permissions
+  Plug 'rking/ag.vim', { 'on': 'Ag' }                           " Grep with 'ag' command
+  Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }                 " Graphical Undo Tree
+  Plug 'SirVer/ultisnips'                                       " Auto-insert snippets
+  Plug 'honza/vim-snippets'                                     " Snippet repository for snipmate/ultisnips/neosnippet
+  Plug 'Shougo/vimproc.vim', { 'do': function('BuildVimProc') } " Async subprocesses
+  Plug 'Shougo/Unite.vim'                                       " Incremental search UI
+  Plug 'Shougo/vimfiler.vim'                                    " Vim file manager
+  Plug 'scrooloose/nerdcommenter'                               " Commenting bindings for many languages
+  Plug 'scrooloose/syntastic'                                   " Syntax highlighting for many languages
+  Plug 'bling/vim-airline'                                      " Lightweight status line
   if s:os != 'windows'
     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
   endif
@@ -314,15 +330,22 @@ call plug#end()
     nnoremap gy :<C-u>Unite -start-insert history/yank<CR>
     nnoremap gb :<C-u>Unite -start-insert buffer<CR>
     if exists('s:has_vimproc') && s:has_vimproc
-      nnoremap <c-p> :<C-u>Unite -start-insert file_rec/async buffer<CR>
+      nnoremap <C-p> :<C-u>Unite -start-insert -toggle file_rec/async buffer<CR>
     else
-      nnoremap <c-p> :<C-u>Unite -start-insert file_rec buffer<CR>
+      nnoremap <C-p> :<C-u>Unite -start-insert -toggle file_rec buffer<CR>
     endif
   " }}
   " VimFiler key mappings {{
     nmap <silent><F4> :VimFilerExplorer<CR>
   " }}
-  nmap <silent>L H<Leader><Leader>j
+  " EasyAlign key mappings {{
+    " Start interactive EasyAlign in visual mode (e.g. vipga)
+    xmap ga <Plug>(EasyAlign)
+    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+    nmap ga <Plug>(EasyAlign)
+  " }}
+  nmap <silent> <leader>d <Plug>Dash # Dash
+  nmap <silent>L H<Leader><Leader>j        # EasyMotion
   nnoremap <silent><F5> :GundoToggle<CR>
   autocmd filetype javascript nnoremap <silent>sd :JsDoc<CR>
 " }}
@@ -333,6 +356,8 @@ call plug#end()
   nnoremap ZW :w<CR>
   " select last pasted text with 'gp'
   nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+  " replace word under cursor
+  nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
 " }}
 " System clipboard {{
   if s:os != 'windows'
