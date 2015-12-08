@@ -123,7 +123,7 @@ end
       " - status: 'installed', 'updated', or 'unchanged'
       " - force:  set on PlugInstall! or PlugUpdate!
       if a:info.status == 'installed' || a:info.force
-        !./install.sh
+        !./install.py --clang-completer
       endif
     endfunction
     " Conceal for snippets
@@ -165,9 +165,14 @@ end
     " Disable default mapping <C-l>
     let g:jsdoc_default_mapping = 0
   " }}
+  " Rust settings {{
+    " Path to racer cmd
+    let g:racer_cmd = "$HOME/.cargo/bin/racer"
+  " }}
 " }}
 " Load plugins {{
 call plug#begin()
+  Plug 'rust-lang/rust.vim'                                     " Rust language support
   Plug 'tpope/vim-repeat'                                       " Repeat support for complex mappings
   Plug 'tpope/vim-sensible'                                     " Sensible defaults for Vim
   Plug 'tpope/vim-surround'                                     " csXX for quotes, braces, etc.
@@ -194,12 +199,13 @@ call plug#begin()
   Plug 'wavded/vim-stylus'                                      " Stylus support
   Plug 'digitaltoad/vim-jade'                                   " Jade support
   Plug 'jeffkreeftmeijer/vim-numbertoggle'                      " Relative line numbers
-  Plug 'Lokaltog/vim-easymotion'                                " Motion Hints
+  Plug 'racer-rust/vim-racer'                                   " Vim Racer (Rust language completion)
+  Plug 'easymotion/vim-easymotion'                              " Motion Hints 
   Plug 'junegunn/vim-easy-align'                                " Easy align
   Plug 'rizzatti/dash.vim'                                      " Dash support
   Plug 'chrisbra/SudoEdit.vim'                                  " Read/write files with admin/root permissions
   Plug 'rking/ag.vim', { 'on': 'Ag' }                           " Grep with 'ag' command
-  Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }                 " Graphical Undo Tree
+  Plug 'simnalamburt/vim-mundo', { 'on': 'GundoToggle' }        " Graphical Undo Tree
   Plug 'SirVer/ultisnips'                                       " Auto-insert snippets
   Plug 'honza/vim-snippets'                                     " Snippet repository for snipmate/ultisnips/neosnippet
   Plug 'Shougo/vimproc.vim', { 'do': function('BuildVimProc') } " Async subprocesses
@@ -208,7 +214,6 @@ call plug#begin()
   Plug 'scrooloose/nerdcommenter'                               " Commenting bindings for many languages
   Plug 'scrooloose/syntastic'                                   " Syntax highlighting for many languages
   Plug 'bling/vim-airline'                                      " Lightweight status line
-  Plug 'gkz/vim-ls'                                             " LiveScript for Vim
   if s:os != 'windows'
     Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
   endif
@@ -256,6 +261,8 @@ call plug#end()
   set shortmess+=filmnrxoOtT
   " Unixish behavior even on Windows (converts to LF and slashes)
   set viewoptions=folds,options,cursor,unix,slash
+  " Open vsplits to the right
+  set splitright
 " }}
 " Appearance {{
 " Color scheme
@@ -311,19 +318,53 @@ call plug#end()
   augroup END
   set undofile
 " }}
-" Perl-style (very magic) regex for slash-find [disabled] {{
-"  nnoremap / /\v
-"  vnoremap / /\v
-"  nnoremap ? ?\v
-"  vnoremap ? ?\v
+" Perl-style (very magic) regex for slash-find {{
+  " Default '/' is taken by EasyMotion
+  nnoremap g/ /\v
+  vnoremap g/ /\v
+  nnoremap g? ?\v
+  vnoremap g? ?\v
 " }}
-" Perl-style regex for slash-find {{
-  nnoremap / /\v
-  vnoremap / /\v
-  nnoremap ? ?\v
-  vnoremap ? ?\v
+" === Custom Functions ===
+" :Verbose (from scriptease.vim) {{
+
+command! -range=999998 -nargs=1 -complete=command Verbose
+      \ :exe s:Verbose(<count> == 999998 ? '' : <count>, <q-args>)
+
+function! s:Verbose(level, excmd)
+  let temp = tempname()
+  let verbosefile = &verbosefile
+  call writefile([':'.a:level.'Verbose '.a:excmd], temp, 'b')
+  return
+        \ 'try|' .
+        \ 'let &verbosefile = '.string(temp).'|' .
+        \ 'silent '.a:level.'verbose exe '.string(a:excmd).'|' .
+        \ 'finally|' .
+        \ 'let &verbosefile = '.string(verbosefile).'|' .
+        \ 'endtry|' .
+        \ 'pedit '.temp.'|wincmd P|nnoremap <buffer> q :bd<CR>'
+endfunction
+
 " }}
-" === Key mappings ==
+" BufferOrTab Prev/Next/First/Last {{
+function! s:BufferOrTabCmd(cmd)
+  let tabcnt = tabpagenr('$')
+  let cmd = a:cmd
+  if tabcnt == 1
+    " Move through buffers if only one tab page is open
+    execute 'b'.cmd
+  else
+    " Move through tabs otherwise
+    execute 'tab'.cmd
+  endif
+endfunction
+
+" }}
+" === Key mappings ===
+function s:AfterPlugins()
+" Custom commands {{
+  command Vrc :e ~/.vimrc
+" }}
 " Plugin key mappings {{
   " Unite.vim key mappings {{
     " Todo, add neo_mru, buffertab, build string accordingly
@@ -345,10 +386,37 @@ call plug#end()
     " Start interactive EasyAlign for a motion/text object (e.g. gaip)
     nmap ga <Plug>(EasyAlign)
   " }}
-  nmap <silent> <leader>d <Plug>Dash # Dash
-  nmap <silent>L H<Leader><Leader>j        # EasyMotion
+  " EasyMotion {{
+    " Select line in entire screen
+    nmap L <Plug>(easymotion-bd-jk)
+    " /-Search motion
+    map  / <Plug>(easymotion-sn)
+    omap / <Plug>(easymotion-tn)
+
+    " 2-char search motions
+    nmap s <Plug>(easymotion-s2)
+    omap z <Plug>(easymotion-t2)
+
+  " }}
+  " Dash {{
+  nmap <silent> g- <Plug>DashSearch
   nnoremap <silent><F5> :GundoToggle<CR>
   autocmd filetype javascript nnoremap <silent>sd :JsDoc<CR>
+  " }}
+  " Unimpaired {{
+  command BTprevious :exe s:BufferOrTabCmd('previous')
+  command BTnext     :exe s:BufferOrTabCmd('next')
+  command BTfirst    :exe s:BufferOrTabCmd('first')
+  command BTlast     :exe s:BufferOrTabCmd('last')
+
+  " Override unimpaired mappings
+  nnoremap <silent> [b :<C-U>BTprev<CR>
+  nnoremap <silent> ]b :<C-U>BTnext<CR>
+  nnoremap <silent> [B :<C-U>BTfirst<CR>
+  nnoremap <silent> ]B :<C-U>BTlast<CR>
+  nnoremap <silent> [w :<C-U>wincmd W<CR>
+  nnoremap <silent> ]w :<C-U>wincmd w<CR>
+  " }}
 " }}
 " General key mappings {{
   " HR below the current line in the same length
@@ -359,6 +427,10 @@ call plug#end()
   nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
   " replace word under cursor
   nnoremap <Leader>s :%s/\<<C-r><C-w>\>//g<Left><Left>
+  " Terminal emulation
+  nnoremap <silent> zt :terminal<CR>
+  " Close (delete) buffer
+  nnoremap <silent> zq :bdelete<CR>
 " }}
 " System clipboard {{
   if s:os != 'windows'
@@ -367,3 +439,10 @@ call plug#end()
     nmap <silent>\v   :let @"=@+<CR>
   endif
 " }}
+" Terminal {{
+  tnoremap <A-`> <C-\><C-n>
+  tnoremap <A-Tab> <C-\><C-n><C-w>w
+  nnoremap <A-Tab> <C-w>w
+" }}
+endfunction
+autocmd VimEnter * call s:AfterPlugins()
