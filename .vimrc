@@ -54,7 +54,7 @@ end
       " - name:   name of the plugin
       " - status: 'installed', 'updated', or 'unchanged'
       " - force:  set on PlugInstall! or PlugUpdate!
-      if a:info.status == 'installed' || a:info.force
+      if a:info.status == 'installed' || a:info.satus == 'updated' || a:info.force
         if s:os == 'linux'
           !make
         elseif s:os == 'osx'
@@ -205,7 +205,7 @@ call plug#begin()
   Plug 'rizzatti/dash.vim'                                      " Dash support
   Plug 'chrisbra/SudoEdit.vim'                                  " Read/write files with admin/root permissions
   Plug 'rking/ag.vim', { 'on': 'Ag' }                           " Grep with 'ag' command
-  Plug 'simnalamburt/vim-mundo', { 'on': 'GundoToggle' }        " Graphical Undo Tree
+  Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }        " Graphical Undo Tree
   Plug 'SirVer/ultisnips'                                       " Auto-insert snippets
   Plug 'honza/vim-snippets'                                     " Snippet repository for snipmate/ultisnips/neosnippet
   Plug 'Shougo/vimproc.vim', { 'do': function('BuildVimProc') } " Async subprocesses
@@ -400,7 +400,7 @@ function s:AfterPlugins()
   " }}
   " Dash {{
   nmap <silent> g- <Plug>DashSearch
-  nnoremap <silent><F5> :GundoToggle<CR>
+  nnoremap <silent><F5> :MundoToggle<CR>
   autocmd filetype javascript nnoremap <silent>sd :JsDoc<CR>
   " }}
   " Unimpaired {{
