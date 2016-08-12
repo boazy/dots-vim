@@ -410,8 +410,8 @@ function s:AfterPlugins()
   command BTlast     :exe s:BufferOrTabCmd('last')
 
   " Override unimpaired mappings
-  nnoremap <silent> [b :<C-U>BTprev<CR>
-  nnoremap <silent> ]b :<C-U>BTnext<CR>
+  nnoremap <silent> [b :<C-U>bp<CR>
+  nnoremap <silent> ]b :<C-U>bn<CR>
   nnoremap <silent> [B :<C-U>BTfirst<CR>
   nnoremap <silent> ]B :<C-U>BTlast<CR>
   nnoremap <silent> [w :<C-U>wincmd W<CR>
