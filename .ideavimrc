@@ -20,6 +20,7 @@ let mapleader = ","
   set shortmess+=filmnrxoOtT
   " Unixish behavior even on Windows (converts to LF and slashes)
   set viewoptions=folds,options,cursor,unix,slash
+  set surround " emulate vim-surround
 " }}
 " Perl-style (very magic) regex for slash-find [disabled] {{
 "  nnoremap / /\v
@@ -29,6 +30,7 @@ let mapleader = ","
 " }}
 " === Key mappings ==
 " Idea key mappings {{
+  
 " }}
 " General key mappings {{
   " HR below the current line in the same length
@@ -37,6 +39,18 @@ let mapleader = ","
   nnoremap ZW :w<CR>
   " select last pasted text with 'gp'
   nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
+  " Actions {{
+  nnoremap <leader>f :action GotoFile<CR>
+  nnoremap <leader>c :action CopyElement<CR>
+  nnoremap <leader>r :action RenameElement<CR>
+  nnoremap L         :action AceJumpAction<CR>
+  nnoremap gs        :action FileStructurePopup<CR>
+  nnoremap gc        :action GotoClass<CR>
+  nnoremap gf        :action GotoFile<CR>
+  nnoremap gD        :action GotoTypeDeclaration<CR>
+  nnoremap gi        :action GotoImplementation<CR>
+  nnoremap gr        :action Refactorings.QuickListPopupAction<CR>
+  " }}
 " }}
 " System clipboard {{
   " Remap clipboard

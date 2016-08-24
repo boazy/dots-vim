@@ -179,6 +179,11 @@ end
 " }}
 " Load plugins {{
 call plug#begin()
+<<<<<<< 6dc4eae8f393361159f9342694cd70a36078c40c
+=======
+  Plug 'rust-lang/rust.vim'                                     " Rust language support
+  Plug 'thinca/vim-quickrun'                                    " Quick run command in buffer
+>>>>>>> Update
   Plug 'tpope/vim-repeat'                                       " Repeat support for complex mappings
   Plug 'tpope/vim-sensible'                                     " Sensible defaults for Vim
   Plug 'tpope/vim-surround'                                     " csXX for quotes, braces, etc.
@@ -210,7 +215,13 @@ call plug#begin()
   Plug 'wavded/vim-stylus'                                      " Stylus support
   Plug 'digitaltoad/vim-jade'                                   " Jade support
   Plug 'jeffkreeftmeijer/vim-numbertoggle'                      " Relative line numbers
+<<<<<<< 6dc4eae8f393361159f9342694cd70a36078c40c
   Plug 'easymotion/vim-easymotion'                              " Motion Hints 
+=======
+  Plug 'racer-rust/vim-racer'                                   " Vim Racer (Rust language completion)
+  Plug 'neovimhaskell/haskell-vim'                              " Haskell support
+  Plug 'easymotion/vim-easymotion'                              " Motion Hints
+>>>>>>> Update
   Plug 'junegunn/vim-easy-align'                                " Easy align
   Plug 'rizzatti/dash.vim'                                      " Dash support
   Plug 'chrisbra/SudoEdit.vim'                                  " Read/write files with admin/root permissions
@@ -224,8 +235,15 @@ call plug#begin()
   Plug 'scrooloose/nerdcommenter'                               " Commenting bindings for many languages
   Plug 'scrooloose/syntastic'                                   " Syntax highlighting for many languages
   Plug 'bling/vim-airline'                                      " Lightweight status line
+<<<<<<< 6dc4eae8f393361159f9342694cd70a36078c40c
 
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Completion
+=======
+  Plug 'fatih/vim-go'                                           " Vim-go
+  if s:os != 'windows'
+    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+  endif
+>>>>>>> Update
 
   " --- Type-specific ---
   Plug 'tpope/vim-git', { 'for': 'git' }
