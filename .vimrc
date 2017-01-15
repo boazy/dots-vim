@@ -191,7 +191,7 @@ call plug#begin()
   Plug 'glts/vim-textobj-comment'                               " Comments text object (ac/ic)
   Plug 'whatyouhide/vim-textobj-xmlattr'                        " Xml Attribute text object (ax/ix)
   Plug 'Julian/vim-textobj-variable-segment'                    " Variable name segment (av/iv)
-  Plug 'altercation/vim-colors-solarized'                       " Solarized color scheme (needs terminal support)
+  Plug 'frankier/neovim-colors-solarized-truecolor-only'        " Solarized color scheme (needs terminal support)
   Plug 'pangloss/vim-javascript'                                " Better JavaScript syntax
   Plug 'heavenshell/vim-jsdoc'                                  " Generate JSDoc
   Plug 'gkz/vim-ls'                                             " LiveScript syntax and make
@@ -270,10 +270,14 @@ call plug#end()
   colorscheme solarized
 " }}
 " GUI settings {{
-  if s:os == "osx"
-    set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h11
-  elseif s:os == "windows"
-    set guifont=Powerline_Consolas:h11
+  set termguicolors
+  if has("gui_vimr")
+  else
+    if s:os == "osx"
+      set guifont=Meslo\ LG\ M\ Regular\ for\ Powerline:h11
+    elseif s:os == "windows"
+      set guifont=Powerline_Consolas:h11
+    endif
   endif
 " }}
 " === Tweaks ===
