@@ -12,6 +12,10 @@ let mapleader = ","
       let s:uname = substitute(system('uname'), "\n", "", "")
       if s:uname == 'Darwin'
         let s:os = "osx"
+
+        " Set python provider
+        let g:python_host_prog = '/usr/local/bin/python'
+        let g:python3_host_prog = '/usr/local/bin/python3'
       elseif s:uname =~ 'CYGWIN'
         let s:os = "cygwin"
       else
@@ -169,10 +173,12 @@ end
     " Path to racer cmd
     let g:racer_cmd = "$HOME/.cargo/bin/racer"
   " }}
+  " User Text Objects {{
+    let g:textobj_ruby_no_mappings = 1
+  " }}
 " }}
 " Load plugins {{
 call plug#begin()
-  Plug 'rust-lang/rust.vim'                                     " Rust language support
   Plug 'tpope/vim-repeat'                                       " Repeat support for complex mappings
   Plug 'tpope/vim-sensible'                                     " Sensible defaults for Vim
   Plug 'tpope/vim-surround'                                     " csXX for quotes, braces, etc.
@@ -187,10 +193,15 @@ call plug#begin()
   Plug 'kana/vim-textobj-fold'                                  " Fold text object (az/iz)
   Plug 'kana/vim-textobj-indent'                                " Idented blocks (ai/ii)
   Plug 'kana/vim-textobj-syntax'                                " Syntax highlighted item (ay/iy)
+  Plug 'kana/vim-textobj-function'                              " Function syntax (af/if)
   Plug 'sgur/vim-textobj-parameter'                             " Comma-separated arguments (a,/i,)
   Plug 'glts/vim-textobj-comment'                               " Comments text object (ac/ic)
+  Plug 'coderifous/textobj-word-column.vim'                     " Columns (ic/ac iC/aC)
   Plug 'whatyouhide/vim-textobj-xmlattr'                        " Xml Attribute text object (ax/ix)
   Plug 'Julian/vim-textobj-variable-segment'                    " Variable name segment (av/iv)
+  Plug 'tek/vim-textobj-ruby'                                   " Text Objects: Ruby support
+  Plug 'libclang-vim/vim-textobj-clang'                         " Text Objects: C/C++ support (using clang)
+  Plug 'bps/vim-textobj-python'                                 " Text Objects: Python Support
   Plug 'frankier/neovim-colors-solarized-truecolor-only'        " Solarized color scheme (needs terminal support)
   Plug 'pangloss/vim-javascript'                                " Better JavaScript syntax
   Plug 'heavenshell/vim-jsdoc'                                  " Generate JSDoc
@@ -199,7 +210,6 @@ call plug#begin()
   Plug 'wavded/vim-stylus'                                      " Stylus support
   Plug 'digitaltoad/vim-jade'                                   " Jade support
   Plug 'jeffkreeftmeijer/vim-numbertoggle'                      " Relative line numbers
-  Plug 'racer-rust/vim-racer'                                   " Vim Racer (Rust language completion)
   Plug 'easymotion/vim-easymotion'                              " Motion Hints 
   Plug 'junegunn/vim-easy-align'                                " Easy align
   Plug 'rizzatti/dash.vim'                                      " Dash support
@@ -214,17 +224,19 @@ call plug#begin()
   Plug 'scrooloose/nerdcommenter'                               " Commenting bindings for many languages
   Plug 'scrooloose/syntastic'                                   " Syntax highlighting for many languages
   Plug 'bling/vim-airline'                                      " Lightweight status line
-  if s:os != 'windows'
-    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-  endif
+
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " Completion
 
   " --- Type-specific ---
   Plug 'tpope/vim-git', { 'for': 'git' }
   Plug 'davidhalter/jedi-vim', { 'for': 'python' }
   Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-  Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
   Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'javascript.jsx'] }
   Plug 'othree/html5.vim', { 'for': 'html' }
+  Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+  Plug 'rust-lang/rust.vim'                                     " Rust language support
+  Plug 'sebastianmarkow/deoplete-rust'
+  Plug 'zchee/deoplete-jedi'                                    " Python
 call plug#end()
 " }}
 " Plugin Checks {{
@@ -420,6 +432,27 @@ function s:AfterPlugins()
   nnoremap <silent> ]B :<C-U>BTlast<CR>
   nnoremap <silent> [w :<C-U>wincmd W<CR>
   nnoremap <silent> ]w :<C-U>wincmd w<CR>
+  " }}
+  " User Text Object key mappings {{
+    " Ruby {{
+      omap <buffer> ar <Plug>(textobj-ruby-block-a)
+      omap <buffer> ir <Plug>(textobj-ruby-block-i)
+      omap <buffer> ak <Plug>(textobj-ruby-class-a)
+      omap <buffer> ik <Plug>(textobj-ruby-class-i)
+      omap <buffer> af <Plug>(textobj-ruby-function-a)
+      omap <buffer> if <Plug>(textobj-ruby-function-i)
+      omap <buffer> an <Plug>(textobj-ruby-name)
+      omap <buffer> in <Plug>(textobj-ruby-name)
+
+      xmap <buffer> ar <Plug>(textobj-ruby-block-a)
+      xmap <buffer> ir <Plug>(textobj-ruby-block-i)
+      xmap <buffer> ak <Plug>(textobj-ruby-class-a)
+      xmap <buffer> ik <Plug>(textobj-ruby-class-i)
+      xmap <buffer> af <Plug>(textobj-ruby-function-a)
+      xmap <buffer> if <Plug>(textobj-ruby-function-i)
+      xmap <buffer> an <Plug>(textobj-ruby-name)
+      xmap <buffer> in <Plug>(textobj-ruby-name)
+      " }}
   " }}
 " }}
 " General key mappings {{
